@@ -11,29 +11,43 @@ function appendOperator(operator) {
 }
 
 function clearDisplay() {
-    currentInput = '';
-    document.getElementById('display').value = '';
+    let display = document.getElementById('display');
+    display.value = '';
+    currentInput = ''; // Resetujemy stan
 }
 
+
+
 function calculateResult() {
+    let display = document.getElementById('display');
     try {
-        currentInput = eval(currentInput).toString();
-        document.getElementById('display').value = currentInput;
+        // Przekształcamy tekst na liczbę i wykonujemy obliczenia
+        display.value = eval(currentInput);
+        currentInput = display.value; // Ustaw wynik jako nową "obecną liczbę"
     } catch (e) {
-        document.getElementById('display').value = 'Błąd';
+        display.value = "Błąd"; // Obsługuje błędy, np. dzielenie przez 0
+        currentInput = ""; // Resetuje obecny stan
     }
 }
 
+// Funkcja dodająca wartości do wyświetlacza
 function appendToDisplay(value) {
     let display = document.getElementById('display');
 
-    // Nie pozwala na dodanie drugiej kropki w tej samej liczbie
-    if (value === '.' && display.value.includes('.')) {
-        return;
+    // Jeśli kliknięto kropkę
+    if (value === '.') {
+        // Jeśli kropka już jest w liczbie, nie dodawaj jej ponownie
+        if (currentInput.includes('.')) {
+            return;
+        }
+        currentInput += value; // Dodaj kropkę do liczby
+    } else {
+        currentInput += value; // Dodaj cyfrę do liczby
     }
-
-    display.value += value;
+    display.value = currentInput; // Zaktualizuj wyświetlacz
 }
+
+
 
 // Zmienia znak liczby na +/-
 function toggleSign() {
