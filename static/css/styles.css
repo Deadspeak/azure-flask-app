@@ -14,11 +14,16 @@ body {
 }
 
 .calculator {
+    width: 300px;
+    max-width: 0 auto;
+    padding: 20px;
+    border: 2px solid #333;
+    border-radius: 10px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 260px;
+    width: 300px;
 }
 
 .display {
