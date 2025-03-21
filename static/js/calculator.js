@@ -1,69 +1,97 @@
-let currentInput = '';
+let firstNumber = '';
+let operator = '';
+let secondNumber = '';
+let isSecondNumber = false;
 
 function appendNumber(number) {
-    currentInput += number;
-    document.getElementById('display').value = currentInput;
+    if (!isSecondNumber) {
+        firstNumber += number;
+        document.getElementById('display').value = firstNumber;
+    } else {
+        secondNumber += number;
+        document.getElementById('display').value = `${firstNumber} ${operator} ${secondNumber}`;
+    }
 }
 
-function appendOperator(operator) {
-    currentInput += ' ' + operator + ' ';
-    document.getElementById('display').value = currentInput;
+function appendOperator(op) {
+    if (firstNumber && !operator) { // Dodajemy operator tylko jeśli jest pierwsza liczba
+        operator = op;
+        isSecondNumber = true;
+        document.getElementById('display').value = `${firstNumber} ${operator}`;
+    }
 }
 
 function clearDisplay() {
-    let display = document.getElementById('display');
-    display.value = '';
-    currentInput = ''; // Resetujemy stan
+    firstNumber = '';
+    operator = '';
+    secondNumber = '';
+    isSecondNumber = false;
+    document.getElementById('display').value = '';
 }
-
-
 
 function calculateResult() {
-    let display = document.getElementById('display');
-    try {
-        // Przekształcamy tekst na liczbę i wykonujemy obliczenia
-        display.value = eval(currentInput);
-        currentInput = display.value; // Ustaw wynik jako nową "obecną liczbę"
-    } catch (e) {
-        display.value = "Błąd"; // Obsługuje błędy, np. dzielenie przez 0
-        currentInput = ""; // Resetuje obecny stan
-    }
-}
+    if (firstNumber && operator && secondNumber) {
+        let num1 = parseFloat(firstNumber);
+        let num2 = parseFloat(secondNumber);
+        let result;
 
-// Funkcja dodająca wartości do wyświetlacza
-function appendToDisplay(value) {
-    let display = document.getElementById('display');
-
-    // Jeśli kliknięto kropkę
-    if (value === '.') {
-        // Jeśli kropka już jest w liczbie, nie dodawaj jej ponownie
-        if (currentInput.includes('.')) {
-            return;
+        switch (operator) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                result = num2 !== 0 ? num1 / num2 : "Błąd: Dzielenie przez 0";
+                break;
+            default:
+                result = "Błąd";
         }
-        currentInput += value; // Dodaj kropkę do liczby
-    } else {
-        currentInput += value; // Dodaj cyfrę do liczby
+
+        document.getElementById('display').value = result;
+        firstNumber = result.toString(); // Wynik staje się nową pierwszą liczbą
+        operator = '';
+        secondNumber = '';
+        isSecondNumber = false;
     }
-    display.value = currentInput; // Zaktualizuj wyświetlacz
 }
 
+function appendToDisplay(value) {
+    if (value === '.') {
+        if (!isSecondNumber && !firstNumber.includes('.')) {
+            firstNumber += value;
+            document.getElementById('display').value = firstNumber;
+        } else if (isSecondNumber && !secondNumber.includes('.')) {
+            secondNumber += value;
+            document.getElementById('display').value = `${firstNumber} ${operator} ${secondNumber}`;
+        }
+    } else {
+        appendNumber(value);
+    }
+}
 
-
-// Zmienia znak liczby na +/-
 function toggleSign() {
-    let display = document.getElementById('display');
-    if (display.value) {
-        display.value = display.value.startsWith('-') ? display.value.substring(1) : '-' + display.value;
+    if (!isSecondNumber && firstNumber) {
+        firstNumber = firstNumber.startsWith('-') ? firstNumber.substring(1) : '-' + firstNumber;
+        document.getElementById('display').value = firstNumber;
+    } else if (isSecondNumber && secondNumber) {
+        secondNumber = secondNumber.startsWith('-') ? secondNumber.substring(1) : '-' + secondNumber;
+        document.getElementById('display').value = `${firstNumber} ${operator} ${secondNumber}`;
     }
 }
 
-// Oblicza pierwiastek kwadratowy
 function calculateSquareRoot() {
-    let display = document.getElementById('display');
-    let value = parseFloat(display.value);
-    if (value >= 0) {
-        display.value = Math.sqrt(value);
-    } else {
-        alert("Nie można obliczyć pierwiastka z liczby ujemnej!");
+    if (!isSecondNumber && firstNumber) {
+        let value = parseFloat(firstNumber);
+        if (value >= 0) {
+            firstNumber = Math.sqrt(value).toString();
+            document.getElementById('display').value = firstNumber;
+        } else {
+            alert("Nie można obliczyć pierwiastka z liczby ujemnej!");
+        }
     }
 }
