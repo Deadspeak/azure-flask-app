@@ -3,14 +3,12 @@ trigger:
     include:
       - master
 
-variables:
-  deploy: false
-
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
   pythonVersion: '3.11'
+  deploy: false
 
 steps:
 - task: UsePythonVersion@0
