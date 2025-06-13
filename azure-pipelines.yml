@@ -35,6 +35,6 @@ steps:
 - task: AzureWebApp@1
   condition: eq(variables['deploy'], 'true')
   inputs:
-    azureSubscription: 'azure-sp-connection'  # <- tu daj nazwę swojego service connection
-    appName: 'azure-flask-app-calculator'     # <- nazwa Twojego App Service
-    package: '.'                              # <- bieżący katalog (czyli cały kod źródłowy)
+    azureSubscription: 'azure-sp-connection'  # <- here add service connection name
+    appName: 'azure-flask-app-calculator'     # <- Name App Service
+    package: '.'                              # <-whole directory
