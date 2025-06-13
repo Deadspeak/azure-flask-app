@@ -7,7 +7,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  pythonVersion: '3.11'
+  - name: pythonVersion
+    value: '3.11'
+  
+  - name: deploy
+    value: 'false'
+
 
 steps:
 - task: UsePythonVersion@0
