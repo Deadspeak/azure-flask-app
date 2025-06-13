@@ -24,3 +24,9 @@ steps:
     source venv/bin/activate
     python -m unittest discover tests
   displayName: 'Run tests'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'azure-sp-connection'  # <- tu daj nazwę swojego service connection
+    appName: 'azure-flask-app-calculator'     # <- nazwa Twojego App Service
+    package: '.'                              # <- bieżący katalog (czyli cały kod źródłowy)
