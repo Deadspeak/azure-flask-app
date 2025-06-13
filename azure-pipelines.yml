@@ -1,3 +1,8 @@
+parameters:
+  - name: deploy
+    type: boolean
+    default: false
+
 trigger:
   branches:
     include:
@@ -26,6 +31,7 @@ steps:
   displayName: 'Run tests'
 
 - task: AzureWebApp@1
+  condition: eq(parameters.deploy, true)
   inputs:
     azureSubscription: 'azure-sp-connection'  # <- tu daj nazwę swojego service connection
     appName: 'azure-flask-app-calculator'     # <- nazwa Twojego App Service
