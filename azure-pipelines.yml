@@ -8,7 +8,6 @@ pool:
 
 variables:
   pythonVersion: '3.11'
-  deploy: $(deploy)
 
 steps:
 - task: UsePythonVersion@0
