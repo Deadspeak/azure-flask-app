@@ -1,0 +1,30 @@
+trigger:
+  branches:
+    include:
+      - docker
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: 'flaskcalc'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.12'
+
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    python -m unittest discover tests
+  displayName: 'Install deps & run tests'
+
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    command: build
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      $(imageName):$(Build.BuildId)
