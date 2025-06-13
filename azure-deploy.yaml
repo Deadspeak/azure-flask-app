@@ -1,0 +1,13 @@
+trigger: none
+
+name: Manual_Deploy_$(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'azure-sp-connection'
+    appName: 'azure-flask-app-calculator'
+    package: '.'
